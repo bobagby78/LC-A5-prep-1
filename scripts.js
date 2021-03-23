@@ -44,11 +44,12 @@ function init(){
     /*** Reference objects needed for dynamic functionality ***/
     //use id's from index.html to reference the objects needed.
     let header = document.getElementById("header");
+    let coloredText = document.getElementById("colored-text")
     let button = document.getElementById("get-colors");
     let paletteName = document.getElementById("palette-name");
     let colorBlocks = []; // stores all 5 div elements in the color blocks
     let colorCodes = []; //stores all the p elements for the color codes
-    for (let i = 0; i < colorBlocks.length; i++){
+    for (let i = 0; i < 5; i++){
         colorBlocks.push(document.getElementById("color" + i)); //the ("color" + i) is concatting "colori" for the HTML color ids in lines 33-37 !!Always refer to the id= "whatevertheidis"!!
         colorCodes.push(document.getElementById("code" + i)); //the ("code" + i) is concat "codei" for HTML in lines 40-44
     }
@@ -60,6 +61,10 @@ function init(){
     function changePalette(){
         let randomIndex;
 
+        if (currentPalette.name ===''){
+            window.confirm("Are you ready to change some colors?")
+        }
+
         do{
             randomIndex = Math.floor(Math.random() * palettes.length);
             currentPalette = palettes[randomIndex];
@@ -68,11 +73,24 @@ function init(){
         paletteName.innerHTML = currentPalette.name // index.html file has palette-name on line 31. We're changing the innerHTML which is what falls betw opening and closing tags associated with said id
         for (let i = 0; i < 5; i++){
             colorBlocks[i].style.backgroundColor =  currentPalette.colors[i]; //css bg color is background-color, for the JS version, most style props will be converted to camelCase
+            colorCodes[i].innerHTML = currentPalette.colors[i]
         }
-
+        header.style.backgroundColor = currentPalette.colors[0];
+        // button.style.backgroundColor = currentPalette.colors[4];
+        coloredText.style.color = currentPalette.colors[4]
+        // button.style.textColor = currentPalette.colors[1];
 
     }
     button.addEventListener("click", changePalette);
+
+    button.addEventListener("mouseover", function(){
+        button.style.backgroundColor = currentPalette.colors[4];
+    })
+    button.addEventListener("mouseout", function(){
+        button.style.backgroundColor = ''
+    })
+    
+    
 }
 
     /* For this first one we establish a named function and then call it from the event listener below. */
